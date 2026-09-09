@@ -1,5 +1,8 @@
 import sys
 import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+
+from Classes.database import get_transactions_by_type, get_monthly_summary
 import inquirer
 from rich.console import Console
 
@@ -19,8 +22,8 @@ def main_menu():
                 'View Dashboard',
                 'Add Transaction',
                 'View Transactions',
+                'Monthly Summary',
                 'Exit'
-
             ],
             ),
         ]
@@ -35,7 +38,18 @@ def main_menu():
         elif action == 'Add Transaction':
             add_transaction_prompt()
         elif action == 'View Transactions':
-            pass #handler for viewing transactions list
+            filter_type = input("Filter by type (Income/Expense): ")
+            results = get_transactions_by_type(filter_type)
+            for r in results:
+                print(r)
+            press_any_key()
+        elif action == 'Monthly Summary':
+            month = int(input("Enter month (1-12): "))
+            year = int(input("Enter year (e.g. 2023): "))
+            summary = get_monthly_summary(month, year)
+            for transaction_type, total in summary:
+                print(f"{transaction_type}: {total}")
+            press_any_key()
         elif action == 'Exit':
             console.print("[bold cyan]Bye[/bold cyan]")
             sys.exit(0)
