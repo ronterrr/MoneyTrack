@@ -44,3 +44,27 @@ def get_monthly_summary(month, year):
         GROUP BY type
     """, (date_prefix + "%",))
     return cursor.fetchall()
+
+
+def add_transaction_prompt():
+    print("\n--- Add New Transaction ---")
+    try:
+        amount = float(input("Enter amount: "))
+        transaction_type = input("Enter type (income/expense): ").strip().lower()
+        description = input("Enter description: ").strip()
+        date = input("Enter date (YYYY-MM-DD): ").strip()
+        account_id = int(input("Enter account ID: "))
+        category_id = int(input("Enter category ID: "))
+
+        conn.execute(
+            """
+                INSERT INTO transactions (amount, type, description, date, account_id, category_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            (amount, transaction_type, description, date, account_id, category_id)
+        )
+        conn.commit()
+
+        print("Transaction added successfully!")
+    except ValueError:
+        print("Invalid input. Please ensure numbers are used for amounts and IDs, and dates follow YYYY-MM-DD")

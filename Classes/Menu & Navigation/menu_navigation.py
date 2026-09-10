@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Classes.database import get_transactions_by_type, get_monthly_summary
+from Classes.database import get_transactions_by_type, get_monthly_summary, add_transaction_prompt
 import inquirer
 from rich.console import Console
 
