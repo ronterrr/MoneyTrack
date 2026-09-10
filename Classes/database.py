@@ -1,6 +1,8 @@
 import sqlite3
 conn = sqlite3.connect("moneytrack.db")
 
+from datetime import datetime
+
 conn.execute("""
     CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY,
@@ -68,3 +70,20 @@ def add_transaction_prompt():
         print("Transaction added successfully!")
     except ValueError:
         print("Invalid input. Please ensure numbers are used for amounts and IDs, and dates follow YYYY-MM-DD")
+
+
+def show_dashboard():
+    print("\n--- Financial Dashboard ---")
+
+    cursor = conn.execute("SELECT type, SUM(amount) FROM transactions GROUP BY type")
+    totals = dict(cursor.fetchall())
+    total_income = totals.get("income", 0.0)
+    total_expense = totals.get("expense", 0.0)
+    balance = total_income - total_expense
+
+    print(f"Total Income: ${total_income:.2f}")
+    print(f"Total Expenses: ${total_expense:.2f}")
+    print(f"Balance: ${balance:.2f}")
+
+
+

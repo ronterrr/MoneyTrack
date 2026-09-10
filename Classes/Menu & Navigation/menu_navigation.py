@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
-from Classes.database import get_transactions_by_type, get_monthly_summary, add_transaction_prompt
+from Classes.database import get_transactions_by_type, get_monthly_summary, add_transaction_prompt, show_dashboard
 import inquirer
 from rich.console import Console
 
@@ -35,6 +35,7 @@ def main_menu():
         action = answers['action']
         if action == 'View Dashboard':
             show_dashboard()
+            press_any_key()
         elif action == 'Add Transaction':
             add_transaction_prompt()
         elif action == 'View Transactions':
